@@ -24,41 +24,43 @@ void loopSignal() {
 }
 
 /*
-  Print to the first line of the LCD.
+ Update the LCD.
  */
-void printFirstLine(String a) {
-  lcd.setCursor(0, 0);
-  lcd.print(a);
-}
-
-/*
-  Print to the second line of the LCD.
- */
-void printSecondLine(String a) {
-  lcd.setCursor(0, 1);
-  lcd.print(a);
+void updateScreen(int x, int y, String text) {
+  lcd.setCursor(x, y);
+  lcd.print(text);
 }
 
 // the setup routine runs once when you press reset:
 void setup() {                
-  // Set up the LCD's number of columns and rows
-  // and turn on the display:
+  // Set up the LCD's number of columns and rows and turn on the display:
   lcd.begin(16, 2);
   lcd.display();
 
-  printFirstLine("Initialising...");
+  updateScreen(0, 0, "Initialising... ");
+  delay(1000);
 
   // Do all the important stuff for setup here
 
-    // initialize the digital pin as an output.
+  // initialize the digital pin as an output.
   pinMode(onboard_led, OUTPUT);
 
-  printFirstLine("Done...");
+  // Current time
+  updateScreen(0, 1, "      T:");
+
+  updateScreen(0, 0, "Done...         ");
 }
 
 // the loop routine runs over and over again forever:
 void loop() {
+  // print the number of seconds since reset:
+  String milli = String(millis()/1000);
+  updateScreen(16 - milli.length(), 1, milli);
+
   // Notify the user we have done a loop
   loopSignal();
 }
+
+
+
 
